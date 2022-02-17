@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  aifame-app:
+    build: 
+      context: .
+      #target: test
+    environment:
+      POSTGRES_USER: aifame-admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: user_db
+      POSTGRES_HOST: aifame-db
+    ports:
+      - "5000:5000"
+    depends_on:
+      - aifame-db
+    networks:
+      - aifame-network
+
+  aifame-db:
+    image: postgres
+    environment:
+      POSTGRES_USER: aifame-admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: user_db
+    ports:
+      - "5432:5432"
+    networks:
+      - aifame-network
+    volumes:
+      - aifame-volume
+
+networks:
+  aifame-network: {}
+
+volumes:
+  aifame-volume: {}
