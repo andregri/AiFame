@@ -46,97 +46,104 @@
 {% endwith %}
 
 <!--Food Table-->
-<div class="column">
-  <table class="table is-fullwidth">
-    <thead>
-      <tr>
-        <th>Food</th>
-        <th>Quantity</th>
-        <th>Expiration</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for food in table %}
-      <tr>
-        <th>{{ food.name }}</th>
-        <th>{{ food.quantity }}</th>
-        <th>{{ food.expiration_date }}</th>
-        <th>
-          <div class="field is-grouped is-horizontal">
-            <p class="control">
-              <button class="button is-warning is-outlined js-modal-trigger" data-target="modal-food-update" type="submit">
-                <span>Edit</span>
-                <span class="icon is-small">
-                  <i class="fas fa-edit"></i>
-                </span>
-              </button>
-            </p>
-            <p class="control"></p>
-            <form method="POST" action="/food_delete/{{ food.id }}">
-              <button class="button is-danger is-outlined" type="submit">
-                <span>Delete</span>
-                <span class="icon is-small">
-                  <i class="fas fa-times"></i>
-                </span>
-              </button>
-            </form>
-            </p>
-            {% include 'modal_food_update.html' %}
-          </div>
-        </th>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+<section class="section">
+  <div class="container">
+    <div class="b-table">
+      <div class="table-wrapper has-mobile-cards">
+        <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+          <thead>
+            <tr>
+              <th>Food</th>
+              <th>Quantity</th>
+              <th>Expiration</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for food in table %}
+            <tr>
+              <th>{{ food.name }}</th>
+              <th>{{ food.quantity }}</th>
+              <th>{{ food.expiration_date }}</th>
+              <th>
+                <div class="field is-grouped is-horizontal">
+                  <p class="control">
+                    <button class="button is-warning is-outlined js-modal-trigger" data-target="modal-food-update"
+                      type="submit">
+                      <span>Edit</span>
+                      <span class="icon is-small">
+                        <i class="fas fa-edit"></i>
+                      </span>
+                    </button>
+                  </p>
+                  <p class="control"></p>
+                  <form method="POST" action="/food_delete/{{ food.id }}">
+                    <button class="button is-danger is-outlined" type="submit">
+                      <span>Delete</span>
+                      <span class="icon is-small">
+                        <i class="fas fa-times"></i>
+                      </span>
+                    </button>
+                  </form>
+                  </p>
+                  {% include 'modal_food_update.html' %}
+                </div>
+              </th>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-  // Functions to open and close a modal
-  function openModal($el) {
-    $el.classList.add('is-active');
-  }
-
-  function closeModal($el) {
-    $el.classList.remove('is-active');
-  }
-
-  function closeAllModals() {
-    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
-      closeModal($modal);
-    });
-  }
-
-  // Add a click event on buttons to open a specific modal
-  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
-    const modal = $trigger.dataset.target;
-    const $target = document.getElementById(modal);
-    console.log($target);
-
-    $trigger.addEventListener('click', () => {
-      openModal($target);
-    });
-  });
-
-  // Add a click event on various child elements to close the parent modal
-  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
-    const $target = $close.closest('.modal');
-
-    $close.addEventListener('click', () => {
-      closeModal($target);
-    });
-  });
-
-  // Add a keyboard event to close all modals
-  document.addEventListener('keydown', (event) => {
-    const e = event || window.event;
-
-    if (e.keyCode === 27) { // Escape key
-      closeAllModals();
+    // Functions to open and close a modal
+    function openModal($el) {
+      $el.classList.add('is-active');
     }
+
+    function closeModal($el) {
+      $el.classList.remove('is-active');
+    }
+
+    function closeAllModals() {
+      (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+        closeModal($modal);
+      });
+    }
+
+    // Add a click event on buttons to open a specific modal
+    (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+      const modal = $trigger.dataset.target;
+      const $target = document.getElementById(modal);
+      console.log($target);
+
+      $trigger.addEventListener('click', () => {
+        openModal($target);
+      });
+    });
+
+    // Add a click event on various child elements to close the parent modal
+    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+      const $target = $close.closest('.modal');
+
+      $close.addEventListener('click', () => {
+        closeModal($target);
+      });
+    });
+
+    // Add a keyboard event to close all modals
+    document.addEventListener('keydown', (event) => {
+      const e = event || window.event;
+
+      if (e.keyCode === 27) { // Escape key
+        closeAllModals();
+      }
+    });
   });
-});
 </script>
 
 {% endblock %}
