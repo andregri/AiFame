@@ -4,4 +4,59 @@
 <h1 class="title">
   Welcome, {{ name }}!
 </h1>
+
+<!--Add food-->
+<div class="column">
+  <div class="box">
+    <form method="POST" action="/profile">
+      <div class="field is-horizontal">
+        <div class="field-body">
+
+          <div class="field">
+              <div class="control">
+                  <input class="input is-large" type="text" name="food" placeholder="food" autofocus="">
+              </div>
+          </div>
+
+          <div class="field">
+              <div class="control">
+                  <input class="input is-large" type="number" name="quantity" placeholder="quantity" autofocus="">
+              </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+                <input class="input is-large" type="date" name="expiration_date" placeholder="expiration">
+            </div>
+          </div>
+
+          <button class="button is-block is-info is-large">Add</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!--Food Table-->
+<div class="column">
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>Food</th>
+        <th>Quantity</th>
+        <th>Expiration</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in table %}
+      <tr>
+        <th>{{ row.name }}</th>
+        <th>{{ row.quantity }}</th>
+        <th>{{ row.expiration_date }}</th>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock %}

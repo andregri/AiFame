@@ -1,6 +1,9 @@
 docker-up:
 	docker-compose -f docker-compose.dev.yml up --build --abort-on-container-exit
 
+docker-up-detached:
+	docker-compose -f docker-compose.dev.yml up -d
+
 docker-down:
 	docker-compose -f docker-compose.dev.yml down
 
