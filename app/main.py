@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from . import db
 from .models import Food
@@ -15,7 +15,7 @@ def profile():
     table = Food.query.all()
     return render_template('profile.html', name=current_user.name, table=table)
 
-@main.route('/profile', methods=['POST'])
+@main.route('/food_create', methods=['POST'])
 @login_required
 def food_post():
     name = request.form.get('food')
@@ -31,3 +31,13 @@ def food_post():
     db.session.commit()
 
     return redirect(url_for('main.profile'))
+
+@main.route('/food_delete/<int:id>', methods=['POST'])
+@login_required
+def food_delete(id):
+    my_data = Food.query.get(id)
+    db.session.delete(my_data)
+    db.session.commit()
+    flash("Item deleted successfully.")
+
+    return redirect(url_for("main.profile"))
