@@ -13,5 +13,5 @@ class Food(db.Model):
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String, nullable=False)
     quantity = db.Column(db.Float, nullable=False)
-    expiration_date = db.Column(db.DateTime)
+    expiration_date = db.Column(db.Date)
     #id_location = db.Column

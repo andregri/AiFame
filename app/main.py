@@ -32,6 +32,18 @@ def food_post():
 
     return redirect(url_for('main.profile'))
 
+@main.route('/food_update/<int:id>', methods=['POST'])
+@login_required
+def food_update(id):
+    food = Food.query.filter_by(id=id).first()
+    food.name = request.form.get('food')
+    food.expiration_date = request.form.get('expiration_date')
+    food.quantity = request.form.get('quantity')
+
+    db.session.commit()
+
+    return redirect(url_for('main.profile'))
+
 @main.route('/food_delete/<int:id>', methods=['POST'])
 @login_required
 def food_delete(id):
