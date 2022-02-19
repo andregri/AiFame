@@ -1,10 +1,9 @@
-version: '3.9'
+version: '3.8'
 
 services:
   aifame-app:
     build: 
       context: .
-      #target: test
     environment:
       POSTGRES_USER: aifame-admin
       POSTGRES_PASSWORD: password
@@ -28,7 +27,7 @@ services:
     networks:
       - aifame-network
     volumes:
-      - aifame-volume
+      - aifame-volume:/var/lib/postgresql/data
 
 networks:
   aifame-network: {}
