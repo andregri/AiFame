@@ -23,7 +23,7 @@ class Config(object):
         config('DB_ENGINE', default='postgresql'),
         config('DB_USERNAME', default='appseed'),
         config('DB_PASS', default='pass'),
-        config('DB_HOST', default='postgresa'),
+        config('DB_HOST', default='postgres'),
         config('DB_PORT', default=5432),
         config('DB_NAME', default='appseed-flask')
     )
