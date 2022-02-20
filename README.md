@@ -26,3 +26,4 @@ Cibo
 
 ## Resources
 - https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login
+- https://docs.microsoft.com/en-us/python/api/overview/azure/cognitiveservices-vision-computervision-readme?view=azure-python
