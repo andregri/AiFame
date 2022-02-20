@@ -14,7 +14,7 @@ from apps.food_inventory import blueprint
 from apps.food_inventory.models import Foods
 
 # Food Routes
-
+    
 @blueprint.route('/food_create', methods=['POST'])
 @login_required
 def food_post():
