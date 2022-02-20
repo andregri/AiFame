@@ -62,10 +62,10 @@
           <tbody>
             {% for food in table %}
             <tr>
-              <th>{{ food.name }}</th>
-              <th>{{ food.quantity }}</th>
-              <th>{{ food.expiration_date }}</th>
-              <th>
+              <td>{{ food.name }}</td>
+              <td>{{ food.quantity }}</td>
+              <td>{{ food.expiration_date }}</td>
+              <td>
                 <div class="field is-grouped is-horizontal">
                   <p class="control">
                     <button class="button is-warning is-outlined js-modal-trigger" data-target="modal-food-update"
@@ -76,7 +76,7 @@
                       </span>
                     </button>
                   </p>
-                  <p class="control"></p>
+                  <p class="control">
                   <form method="POST" action="/food_delete/{{ food.id }}">
                     <button class="button is-danger is-outlined" type="submit">
                       <span>Delete</span>
@@ -88,9 +88,9 @@
                   </p>
                   {% include 'modal_food_update.html' %}
                 </div>
-              </th>
+              </td>
             </tr>
-            {% endfor %}
+          {% endfor %}
           </tbody>
         </table>
       </div>
