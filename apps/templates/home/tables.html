@@ -3,7 +3,7 @@
 {% block title %} Tables {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %} 
+{% block stylesheets %}
 <link href="/static/assets/css/modal.css" rel="stylesheet" />
 {% endblock stylesheets %}
 
@@ -64,12 +64,66 @@
                   </td>
                   <td class="align-middle text-center">
                     <div class="ms-auto">
-                      <a class="btn btn-link text-warning px-3 mb-0" href="javascript:;"><i class="fas fa-pencil-alt me-2" aria-hidden="true"></i>Edit</a>
-                        <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="#open-modal"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                      <a class="btn btn-link text-warning px-3 mb-0" href="#modal-edit"><i class="fas fa-pencil-alt me-2" aria-hidden="true"></i>Edit</a>
+                      <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="#modal-delete"><i
+                          class="far fa-trash-alt me-2"></i>Delete</a>
                     </div>
                   </td>
                 </tr>
-              {% endfor %}    
+
+                <div id="modal-edit" class="modal-window">
+                  <div>
+                    <a href="#" title="Close" class="modal-close">Close</a>
+                    <form method="POST" action="/food_update/{{ food.id }}">
+                      <h1>Edit {{ food.name }}</h1>
+                      <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+                        <h2> Name: </h2>
+                        <div class="input-group">
+                          <input type="text" class="form-control" value="{{ food.name }}">
+                        </div>
+                      </div>
+                      <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+                        <h2> Quantity: </h2>
+                        <div class="input-group">
+                          <input type="number" class="form-control" value="{{ food.quantity }}">
+                        </div>
+                      </div>
+                      <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+                        <h2> Expiration: </h2>
+                        <div class="input-group">
+                          <input type="date" class="form-control" value="{{ food.expiration_date }}">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="card mb-4">
+                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;">Confirm</a>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div id="modal-delete" class="modal-window">
+                  <div>
+                    <a href="#" title="Close" class="modal-close">Close</a>
+                    <form  id="delete-action-modal" method="POST" action="/food_delete/{{ food.id }}">
+                      <h1>Delete {{ food.name }}</h1>
+                      <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+                        Are you sure you want to delete {{ food.name }}
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="card mb-4">
+                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;" onclick="document.getElementById('delete-action-modal').submit();">Confirm</a>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                {% endfor %}
               </tbody>
             </table>
           </div>
@@ -81,20 +135,12 @@
   <div class="row">
     <div class="col-12">
       <div class="card mb-4">
-        <a class="btn bg-gradient-success mb-0" href="javascript:;"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add New Food</a>
+        <a class="btn bg-gradient-success mb-0" href="javascript:;"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add New
+          Food</a>
       </div>
     </div>
   </div>
 
-  <div id="open-modal" class="modal-window">
-    <div>
-      <a href="#" title="Close" class="modal-close">Close</a>
-      <h1>Voilà!</h1>
-      <div>A CSS-only modal based on the :target pseudo-class. Hope you find it helpful.</div>
-      <div><small>Check out</small></div>
-      <a href="https://aminoeditor.com" target="_blank">👉 Amino: Live CSS Editor for Chrome</div>
-      </div>
-  </div>
   <!-- <div class="row">
     <div class="col-12">
       <div class="card mb-4">
@@ -334,7 +380,7 @@
   </div> -->
 
   <!--Add food-->
-  <!-- <div class="column">
+  <div class="column">
     <div class="box">
       <form method="POST" action="/food_create">
         <div class="field is-horizontal">
@@ -363,7 +409,7 @@
         </div>
       </form>
     </div>
-  </div> -->
+  </div>
 
 
   {% include "includes/footer.html" %}
@@ -373,4 +419,5 @@
 {% endblock content %}
 
 <!-- Specific JS goes HERE -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+{% endblock javascripts %}

@@ -33,6 +33,11 @@
     margin: 0 0 15px;
   }
   
+  .modal-window h2 {
+    font-size: 110%;
+    margin: 0 40px 0 0;
+  }
+
   .modal-close {
     color: #aaa;
     line-height: 50px;
@@ -46,4 +51,8 @@
   }
   .modal-close:hover {
     color: black;
+  }
+
+  .modal-btn-confirm {
+      margin-top: 20px;
   }
