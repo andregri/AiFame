@@ -64,14 +64,14 @@
                   </td>
                   <td class="align-middle text-center">
                     <div class="ms-auto">
-                      <a class="btn btn-link text-warning px-3 mb-0" href="#modal-edit"><i class="fas fa-pencil-alt me-2" aria-hidden="true"></i>Edit</a>
-                      <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="#modal-delete"><i
+                      <a class="btn btn-link text-warning px-3 mb-0" href="#modal-edit{{ food.id }}"><i class="fas fa-pencil-alt me-2" aria-hidden="true"></i>Edit</a>
+                      <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="#modal-delete{{ food.id }}"><i
                           class="far fa-trash-alt me-2"></i>Delete</a>
                     </div>
                   </td>
                 </tr>
 
-                <div id="modal-edit" class="modal-window">
+                <div id="modal-edit{{ food.id }}" class="modal-window" role="dialog">
                   <div>
                     <a href="#" title="Close" class="modal-close">Close</a>
                     <form method="POST" action="/food_update/{{ food.id }}">
@@ -105,7 +105,7 @@
                   </div>
                 </div>
 
-                <div id="modal-delete" class="modal-window">
+                <div id="modal-delete{{ food.id }}" class="modal-window">
                   <div>
                     <a href="#" title="Close" class="modal-close">Close</a>
                     <form  id="delete-action-modal" method="POST" action="/food_delete/{{ food.id }}">
