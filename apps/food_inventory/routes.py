@@ -12,22 +12,30 @@ from flask_login import (
 from apps import db, login_manager
 from apps.food_inventory import blueprint
 from apps.food_inventory.models import Foods
+from apps.food_inventory.forms import FoodForm
 
 # Food Routes
     
 @blueprint.route('/food_create', methods=['POST'])
 @login_required
 def food_post():
-    name = request.form.get('food')
-    expiration = request.form.get('expiration_date')
-    quantity = request.form.get('quantity')
+    form = FoodForm(request.form)
+
+    if not form.validate_on_submit():
+        flash("Invalid data")
+        return redirect(url_for('home_blueprint.route_template', template='tables'))
+
+    name = form.food_name.data
+    expiration = form.expiration_date.data
+    quantity = form.quantity.data
 
     # create a new food item
     new_food = Foods(
         name=name, 
         quantity=quantity,
         expiration_date=expiration,
-        id_user=current_user.id)
+        id_user=current_user.id
+    )
 
     # add the new user to the database
     db.session.add(new_food)
@@ -39,9 +47,16 @@ def food_post():
 @login_required
 def food_update(id):
     food = Foods.query.filter_by(id=id).first()
-    food.name = request.form.get('food')
-    food.expiration_date = request.form.get('expiration_date')
-    food.quantity = request.form.get('quantity')
+
+    form = FoodForm(request.form)
+
+    if not form.validate_on_submit():
+        flash("Invalid data")
+        return redirect(url_for('home_blueprint.route_template', template='tables'))
+
+    food.name = form.food_name.data
+    food.expiration = form.expiration_date.data
+    food.quantity = form.quantity.data
 
     db.session.commit()
 

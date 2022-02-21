@@ -9,6 +9,7 @@ from flask_login import login_required
 from jinja2 import TemplateNotFound
 
 from apps.food_inventory.models import Foods
+from apps.food_inventory.forms import FoodForm
 
 @blueprint.route('/index')
 @login_required
@@ -20,6 +21,7 @@ def index():
 @login_required
 def route_template(template):
     table = Foods.query.all()
+    form = FoodForm(request.form)
 
     try:
         if not template.endswith('.html'):
@@ -28,7 +30,7 @@ def route_template(template):
         segment = get_segment(request)
 
         # Serve the file (if exists) from app/templates/home/FILE.html
-        return render_template("home/" + template, segment=segment, table=table)
+        return render_template("home/" + template, segment=segment, table=table, form=form)
 
     except TemplateNotFound:
         return render_template('home/page-404.html'), 404
