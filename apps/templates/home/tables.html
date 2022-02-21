@@ -71,7 +71,7 @@
                 <div id="modal-edit{{ food.id }}" class="modal-window" role="dialog">
                   <div>
                     <a href="#" title="Close" class="modal-close">Close</a>
-                    <form id="edit-action-modal" method="POST" action="/food_update/{{ food.id }}">
+                    <form id="edit-action-modal{{ food.id }}" method="POST" action="/food_update/{{ food.id }}">
                       <h1>Edit {{ food.name }}</h1>
                       <div class="ms-md-auto pe-md-4 d-flex align-items-center">
                         <h2> Name: </h2>
@@ -94,7 +94,7 @@
                       <div class="row">
                         <div class="col-12">
                           <div class="card mb-4">
-                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;" onclick="document.getElementById('edit-action-modal').submit();">Confirm</a>
+                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;" onclick="document.getElementById('edit-action-modal{{ food.id }}').submit();">Confirm</a>
                           </div>
                         </div>
                       </div>
@@ -105,7 +105,7 @@
                 <div id="modal-delete{{ food.id }}" class="modal-window">
                   <div>
                     <a href="#" title="Close" class="modal-close">Close</a>
-                    <form id="delete-action-modal" method="POST" action="/food_delete/{{ food.id }}">
+                    <form id="delete-action-modal{{ food.id }}" method="POST" action="/food_delete/{{ food.id }}">
                       <h1>Delete {{ food.name }}</h1>
                       <div class="ms-md-auto pe-md-4 d-flex align-items-center">
                         Are you sure you want to delete {{ food.name }}
@@ -113,7 +113,7 @@
                       <div class="row">
                         <div class="col-12">
                           <div class="card mb-4">
-                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;" onclick="document.getElementById('delete-action-modal').submit();">Confirm</a>
+                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;" onclick="document.getElementById('delete-action-modal{{ food.id }}').submit();">Confirm</a>
                           </div>
                         </div>
                       </div>
