@@ -31,10 +31,8 @@
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Food</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
-                  </th>
                   <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tag</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expiration
-                  </th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expiration</th>
                   <th class="text-secondary opacity-7"></th>
                 </tr>
               </thead>
@@ -65,8 +63,7 @@
                   <td class="align-middle text-center">
                     <div class="ms-auto">
                       <a class="btn btn-link text-warning px-3 mb-0" href="#modal-edit{{ food.id }}"><i class="fas fa-pencil-alt me-2" aria-hidden="true"></i>Edit</a>
-                      <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="#modal-delete{{ food.id }}"><i
-                          class="far fa-trash-alt me-2"></i>Delete</a>
+                      <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="#modal-delete{{ food.id }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
                     </div>
                   </td>
                 </tr>
@@ -79,25 +76,25 @@
                       <div class="ms-md-auto pe-md-4 d-flex align-items-center">
                         <h2> Name: </h2>
                         <div class="input-group">
-                          <input type="text" class="form-control" value="{{ food.name }}">
+                          <input type="text" class="form-control" name="food" placeholder="food" value="{{ food.name }}">
                         </div>
                       </div>
                       <div class="ms-md-auto pe-md-4 d-flex align-items-center">
                         <h2> Quantity: </h2>
                         <div class="input-group">
-                          <input type="number" class="form-control" value="{{ food.quantity }}">
+                          <input type="number" class="form-control" name="quantity" placeholder="quantity" value="{{ food.quantity }}">
                         </div>
                       </div>
                       <div class="ms-md-auto pe-md-4 d-flex align-items-center">
                         <h2> Expiration: </h2>
                         <div class="input-group">
-                          <input type="date" class="form-control" value="{{ food.expiration_date }}">
+                          <input type="date" class="form-control" name="expiration_date" placeholder="expiration" value="{{ food.expiration_date }}">
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-12">
                           <div class="card mb-4">
-                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;" onclick="document.getElementById('edit-action-modal').submit();" >Confirm</a>
+                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;" onclick="document.getElementById('edit-action-modal').submit();">Confirm</a>
                           </div>
                         </div>
                       </div>
@@ -108,7 +105,7 @@
                 <div id="modal-delete{{ food.id }}" class="modal-window">
                   <div>
                     <a href="#" title="Close" class="modal-close">Close</a>
-                    <form  id="delete-action-modal" method="POST" action="/food_delete/{{ food.id }}">
+                    <form id="delete-action-modal" method="POST" action="/food_delete/{{ food.id }}">
                       <h1>Delete {{ food.name }}</h1>
                       <div class="ms-md-auto pe-md-4 d-flex align-items-center">
                         Are you sure you want to delete {{ food.name }}
