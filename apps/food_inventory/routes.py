@@ -33,7 +33,7 @@ def food_post():
     db.session.add(new_food)
     db.session.commit()
 
-    return redirect(url_for('home_blueprint.index'))
+    return redirect(url_for('home_blueprint.route_template', template='tables'))
 
 @blueprint.route('/food_update/<int:id>', methods=['POST'])
 @login_required
@@ -45,7 +45,7 @@ def food_update(id):
 
     db.session.commit()
 
-    return redirect(url_for('home_blueprint.index'))
+    return redirect(url_for('home_blueprint.route_template', template='tables'))
 
 @blueprint.route('/food_delete/<int:id>', methods=['POST'])
 @login_required
@@ -55,7 +55,7 @@ def food_delete(id):
     db.session.commit()
     flash("Item deleted successfully.")
 
-    return redirect(url_for("home_blueprint.index"))
+    return redirect(url_for('home_blueprint.route_template', template='tables'))
 
 
 # Errors
