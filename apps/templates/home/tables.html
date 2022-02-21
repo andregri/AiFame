@@ -132,9 +132,43 @@
   <div class="row">
     <div class="col-12">
       <div class="card mb-4">
-        <a class="btn bg-gradient-success mb-0" href="javascript:;"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add New
+        <a class="btn bg-gradient-success mb-0" href="#modal-add"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add New
           Food</a>
       </div>
+    </div>
+  </div>
+
+  <div id="modal-add" class="modal-window" role="dialog">
+    <div>
+      <a href="#" title="Close" class="modal-close">Close</a>
+      <form id="edit-action-add" method="POST" action="/food_create">
+        <h1>Add</h1>
+        <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+          <h2> Food Name: </h2>
+          <div class="input-group">
+            <input type="text" class="form-control" name="food" placeholder="food">
+          </div>
+        </div>
+        <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+          <h2> Quantity: </h2>
+          <div class="input-group">
+            <input type="number" class="form-control" name="quantity" placeholder="quantity">
+          </div>
+        </div>
+        <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+          <h2> Expiration: </h2>
+          <div class="input-group">
+            <input type="date" class="form-control" name="expiration_date" placeholder="expiration">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="card mb-4">
+              <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;" onclick="document.getElementById('edit-action-add').submit();">Add</a>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -376,37 +410,7 @@
     </div>
   </div> -->
 
-  <!--Add food-->
-  <div class="column">
-    <div class="box">
-      <form method="POST" action="/food_create">
-        <div class="field is-horizontal">
-          <div class="field-body">
 
-            <div class="field">
-              <div class="control">
-                <input class="input is-large" type="text" name="food" placeholder="food" autofocus="">
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="control">
-                <input class="input is-large" type="number" name="quantity" placeholder="quantity" autofocus="">
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="control">
-                <input class="input is-large" type="date" name="expiration_date" placeholder="expiration">
-              </div>
-            </div>
-
-            <button class="button is-block is-info is-large">Add</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
 
 
   {% include "includes/footer.html" %}
