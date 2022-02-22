@@ -143,25 +143,25 @@
       <a href="#" title="Close" class="modal-close">Close</a>
       <form id="edit-action-add" method="POST" action="/food_create">
         <!-- {{ form.hidden_tag() }} -->
-        <h1>Add</h1>
+        <h1>Add Food</h1>
         <div class="ms-md-auto pe-md-4 d-flex align-items-center">
-          <h2> Food Name: </h2>
+          <h2> Name: </h2>
           <div class="input-group">
-            <input type="text" class="form-control" name="food" placeholder="food">
+            <input type="text" class="form-control" name="food" placeholder="Food Name">
             <!-- {{ form.food_name(placeholder="Food name", class="form-control") }} -->
           </div>
         </div>
         <div class="ms-md-auto pe-md-4 d-flex align-items-center">
           <h2> Quantity: </h2>
           <div class="input-group">
-            <input type="number" class="form-control" name="quantity" placeholder="quantity">
+            <input type="number" class="form-control" name="quantity" placeholder="Food Quantity">
             <!-- {{ form.quantity(placeholder="Quantity", class="form-control") }} -->
           </div>
         </div>
         <div class="ms-md-auto pe-md-4 d-flex align-items-center">
           <h2> Expiration: </h2>
           <div class="input-group">
-            <input type="date" class="form-control" name="expiration_date" placeholder="expiration">
+            <input type="date" class="form-control" name="expiration_date" placeholder="Food Expiration Date">
             <!-- {{ form.expiration_date(placeholder="Expiration date", class="form-control") }} -->
           </div>
         </div>
