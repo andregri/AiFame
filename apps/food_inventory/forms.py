@@ -29,7 +29,7 @@ class FoodForm(FlaskForm):
         result = super(FoodForm, self).validate()
         print(self.food_name.data, self.expiration_date.data, self.quantity.data)
         if not result:
-            return result
+            return False
             
         if self.expiration_date.data < date.today() or self.quantity.data <= 0:
             return False
