@@ -21,9 +21,9 @@ from apps.food_inventory.forms import FoodForm
 def food_post():
     form = FoodForm(request.form)
 
-    # if not form.validate_on_submit():
-    #     flash("Invalid data")
-    #     return redirect(url_for('home_blueprint.route_template', template='tables'))
+    if not form.validate_on_submit():
+        flash("Invalid data")
+        return redirect(url_for('home_blueprint.route_template', template='tables'))
 
     name = form.food_name.data
     expiration = form.expiration_date.data
@@ -50,9 +50,9 @@ def food_update(id):
 
     form = FoodForm(request.form)
 
-    # if not form.validate_on_submit():
-    #     flash("Invalid data")
-    #     return redirect(url_for('home_blueprint.route_template', template='tables'))
+    if not form.validate_on_submit():
+        flash("Invalid data")
+        return redirect(url_for('home_blueprint.route_template', template='tables'))
 
     food.name = form.food_name.data
     food.expiration = form.expiration_date.data

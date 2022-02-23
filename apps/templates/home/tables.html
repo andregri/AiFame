@@ -72,11 +72,13 @@
                   <div>
                     <a href="#" title="Close" class="modal-close">Close</a>
                     <form id="edit-action-modal{{ food.id }}" method="POST" action="/food_update/{{ food.id }}">
+                      {{ form.hidden_tag() }}
+                      {{ form.csrf_token }}
                       <h1>Edit {{ food.name }}</h1>
                       <div class="ms-md-auto pe-md-4 d-flex align-items-center">
                         <h2> Name: </h2>
                         <div class="input-group">
-                          <input type="text" class="form-control" name="food" placeholder="food_name" value="{{ food.name }}">
+                          <input type="text" class="form-control" name="food_name" placeholder="food_name" value="{{ food.name }}">
                         </div>
                       </div>
                       <div class="ms-md-auto pe-md-4 d-flex align-items-center">
@@ -142,7 +144,8 @@
     <div>
       <a href="#" title="Close" class="modal-close">Close</a>
       <form id="edit-action-add" method="POST" action="/food_create">
-        <!-- {{ form.hidden_tag() }} -->
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
         <h1>Add Food</h1>
         <div class="ms-md-auto pe-md-4 d-flex align-items-center">
           <h2> Name: </h2>
