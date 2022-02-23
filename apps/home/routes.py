@@ -4,12 +4,14 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 import os
-
+from apps.config import AzureConfig
 from apps.home import blueprint
 from flask import render_template, request, flash, redirect, url_for, render_template
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 from werkzeug.utils import secure_filename
+
+from azure.storage.blob import BlobClient, ContainerClient
 
 from apps.food_inventory.models import Foods
 from apps.food_inventory.forms import FoodForm
@@ -67,18 +69,30 @@ def allowed_file(filename):
 def upload_image():
     if 'file' not in request.files:
         flash('No file part')
-        return redirect(url_for('home_blueprint.index'))
+        return redirect(url_for('.index'))
+
     file = request.files['file']
     if file.filename == '':
         flash('No image selected for uploading')
-        return redirect(url_for('home_blueprint.index'))
+        return redirect(url_for('.index'))
+
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(os.path.join('./', filename))
-        # print('upload_image filename: ' + filename)
+        # file.save(os.path.join('./', filename))
+        upload_blob('uploads', filename, file)
         flash('Image successfully uploaded and displayed below')
-        return render_template(url_for('home_blueprint.index'), filename=filename)
+        return redirect(url_for('.index'))
     else:
         print('Allowed image types are -> png, jpg, jpeg, gif')
         flash('Allowed image types are -> png, jpg, jpeg, gif')
-        return redirect(url_for('home_blueprint.index'))
+        return redirect(url_for('.index'))
+
+
+def upload_blob(container, filename, data):
+    # Create a blob client using the local file name as the name for the blob
+    blob_client = AzureConfig.blob_service_client.get_blob_client(container=container, blob=filename)
+
+    print(f'Uploading to Azure Storage as blob: {filename}')
+
+    # Upload the created file
+    blob_client.upload_blob(data)

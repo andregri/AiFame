@@ -5,8 +5,12 @@ Copyright (c) 2019 - present AppSeed.us
 
 import os
 from decouple import config
+from dotenv import load_dotenv
+from azure.storage.blob import BlobServiceClient, BlobClient
 
 class Config(object):
+    load_dotenv()
+
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     # Set up the App SECRET_KEY
@@ -28,6 +32,13 @@ class Config(object):
         config('DB_NAME', default='appseed-flask')
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+class AzureConfig():
+    blob_storage_connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+
+    # Create the BlobServiceClient object which will be used to create a container client
+    blob_service_client = BlobServiceClient.from_connection_string(blob_storage_connect_str)
+
 
 
 # Load all possible configurations
