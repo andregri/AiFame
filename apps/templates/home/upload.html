@@ -1,5 +1,15 @@
-<!doctype html>
-<title>Python Flask File Upload Example</title>
+{% extends 'layouts/base.html' %}
+
+{% block title %}  Python Flask File Upload Example {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link href="/static/assets/css/modal.css" rel="stylesheet" />
+{% endblock stylesheets %}
+
+{% block content %}
+
+
 <h2>Select a file to upload</h2>
 <p>
 	{% with messages = get_flashed_messages() %}
@@ -26,3 +36,5 @@
     <p>
 		<input type="submit" value="Submit">
 	</p>
+
+{% endblock content %}

@@ -3,10 +3,13 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+import os
+
 from apps.home import blueprint
-from flask import render_template, request
+from flask import render_template, request, flash, redirect, url_for, render_template
 from flask_login import login_required
 from jinja2 import TemplateNotFound
+from werkzeug.utils import secure_filename
 
 from apps.food_inventory.models import Foods
 from apps.food_inventory.forms import FoodForm
@@ -15,7 +18,6 @@ from apps.food_inventory.forms import FoodForm
 @login_required
 def index():
     return render_template('home/index.html', segment='index') 
-
 
 @blueprint.route('/<template>')
 @login_required
@@ -53,3 +55,30 @@ def get_segment(request):
         return None
 
 
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@blueprint.route('/upload-image', methods=['POST'])
+@login_required
+def upload_image():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(url_for('home_blueprint.index'))
+    file = request.files['file']
+    if file.filename == '':
+        flash('No image selected for uploading')
+        return redirect(url_for('home_blueprint.index'))
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join('./', filename))
+        # print('upload_image filename: ' + filename)
+        flash('Image successfully uploaded and displayed below')
+        return render_template(url_for('home_blueprint.index'), filename=filename)
+    else:
+        print('Allowed image types are -> png, jpg, jpeg, gif')
+        flash('Allowed image types are -> png, jpg, jpeg, gif')
+        return redirect(url_for('home_blueprint.index'))
