@@ -7,6 +7,8 @@ import os
 from decouple import config
 from dotenv import load_dotenv
 from azure.storage.blob import BlobServiceClient, BlobClient
+from azure.cognitiveservices.vision.computervision import ComputerVisionClient
+from msrest.authentication import CognitiveServicesCredentials
 
 class Config(object):
     load_dotenv()
@@ -39,7 +41,13 @@ class AzureConfig():
     # Create the BlobServiceClient object which will be used to create a container client
     blob_service_client = BlobServiceClient.from_connection_string(blob_storage_connect_str)
 
-
+    # Create ComputerVisionClient object
+    computervision_endpoint = os.getenv('AZURE_CV_ENDPOINT')
+    computervision_apikey = os.getenv('AZURE_CV_APIKEY')
+    computervision_client = ComputerVisionClient(
+        computervision_endpoint,
+        CognitiveServicesCredentials(computervision_apikey)
+    )
 
 # Load all possible configurations
 config_dict = {

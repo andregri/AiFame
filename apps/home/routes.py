@@ -10,8 +10,11 @@ from flask import render_template, request, flash, redirect, url_for, render_tem
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 from werkzeug.utils import secure_filename
+from aiohttp import ClientSession
+import asyncio
 
 from azure.storage.blob import BlobClient, ContainerClient
+from apps.home import computervision
 
 from apps.food_inventory.models import Foods
 from apps.food_inventory.forms import FoodForm
@@ -87,7 +90,6 @@ def upload_image():
         flash('Allowed image types are -> png, jpg, jpeg, gif')
         return redirect(url_for('.index'))
 
-
 def upload_blob(container, filename, data):
     # Create a blob client using the local file name as the name for the blob
     blob_client = AzureConfig.blob_service_client.get_blob_client(container=container, blob=filename)
@@ -96,3 +98,36 @@ def upload_blob(container, filename, data):
 
     # Upload the created file
     blob_client.upload_blob(data)
+
+urls = ['https://www.grandecig.com/hs-fs/hubfs/images/blog_images/2020_Blog_Images/CompareTopDietTrends.jpg?width=730&name=CompareTopDietTrends.jpg',
+        'https://www.collinsdictionary.com/images/full/fruit_163436567.jpg',
+        'https://www.dole.com/-/media/project/dole/produce-images/headers/dole-produce-fruit-medley.png?rev=1416123f2d094cd1b7494365948214be&hash=F89C9786C9A5F599A784D7753F82236C']
+
+# Helper Functions
+
+async def fetch_url(session, url):
+    """Fetch the specified URL using the aiohttp session specified."""
+    #response = await session.get(url)
+    #return {'url': response.url, 'status': response.status}
+    objets = await computervision.detect_objects(AzureConfig.computervision_client, url)
+    return {'object': objets[0].object_property, 'status': 200}
+
+
+# Routes
+
+@blueprint.route('/async_get_urls_v2')
+async def async_get_urls_v2():
+    """Asynchronously retrieve the list of URLs."""
+    async with ClientSession() as session:
+        tasks = []
+        for url in urls:
+            task = asyncio.create_task(fetch_url(session, url))
+            tasks.append(task)
+        sites = await asyncio.gather(*tasks)
+
+    # Generate the HTML response
+    response = '<h1>URLs:</h1>'
+    for site in sites:
+        response += f"<p>URL: {site['object']} --- Status Code: {site['status']}</p>"
+
+    return response
