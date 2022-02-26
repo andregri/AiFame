@@ -3,7 +3,9 @@
 {% block title %} Dashboard {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<link href="/static/assets/css/modal.css" rel="stylesheet" />
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -28,6 +30,82 @@
     </div>
   </div>
 </form>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card mb-4">
+      <a class="btn bg-gradient-success mb-0" href="#modal-food-from-pic"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add New
+        Food</a>
+    </div>
+  </div>
+</div>
+
+
+<div id="modal-food-from-pic" class="modal-window">
+  <div>
+    <a href="#" title="Close" class="modal-close">Close</a>
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <h6>Inventory</h6>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Food</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tag</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expiration</th>
+                      <th class="text-secondary opacity-7"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for food in detected_foods %}
+                    <tr>
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <div>
+                            <img src="/static/assets/img/food.jpg" class="avatar avatar-sm me-3" alt="user1">
+                          </div>
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">{{ food['name'] }}</h6>
+                            <!-- <p class="text-xs text-secondary mb-0">john@creative-tim.com</p> -->
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">{{ food['quantity'] }}</p>
+                        <!-- <p class="text-xs text-secondary mb-0">Organization</p> -->
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <span class="badge badge-sm bg-gradient-dark">Vegetables</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">{{ food['expiration_date'] }}</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <div class="ms-auto">
+                          <a class="btn btn-link text-warning px-3 mb-0" href="#modal-edit"><i class="fas fa-pencil-alt me-2" aria-hidden="true"></i>Edit</a>
+                          <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="#modal-delete"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                        </div>
+                      </td>
+                    </tr>
+
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
 
 <!-- <div class="container-fluid py-4">
       <div class="row"> 

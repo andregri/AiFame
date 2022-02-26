@@ -4,16 +4,18 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 import collections
+from json import detect_encoding
 import os
 from apps.config import AzureConfig
 from apps.home import blueprint
 from flask import render_template, request, flash, redirect, url_for, render_template
-from flask_login import login_required
+from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 from werkzeug.utils import secure_filename
 from aiohttp import ClientSession
 import asyncio
 import requests
+from datetime import date, timedelta
 
 from azure.storage.blob import BlobClient, ContainerClient
 from apps.home import computervision
@@ -130,6 +132,7 @@ async def fetch_url(session, img_data, object):
 async def async_get_urls_v2():
     """Asynchronously retrieve the list of URLs."""
     url = urls[0]
+    form = FoodForm(request.form)
 
     # 1. await Detect object from image url
     objects = await computervision.detect_objects(AzureConfig.computervision_client, url)
@@ -144,11 +147,18 @@ async def async_get_urls_v2():
                 tasks.append(task)
         tags = await asyncio.gather(*tasks)
 
-    object_amount = collections.Counter(tags)
+    detected_objects = collections.Counter(tags)
+    foods = []
+    for name, quantity in detected_objects.items():
+        food = Foods(
+            name=name, 
+            quantity=quantity,
+            expiration_date=date.today() + timedelta(days=1),
+            id_user=current_user.id
+        )
+        foods.append(food)
 
-    # Generate the HTML response
-    response = '<h1>Food:</h1>'
-    for object, amount in object_amount.items():
-        response += f"<p>{object}: {amount}</p>"
+    return render_template('home/index.html', detected_foods=foods, form=form)
 
-    return response
+# POST /add_food_from_image
+#  Body: [{'name':, quantity: , expiration_date: }, {}, {}]
