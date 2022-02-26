@@ -72,6 +72,30 @@ def food_delete(id):
 
     return redirect(url_for('home_blueprint.route_template', template='tables'))
 
+@blueprint.route('/add_foods_from_image', methods=['POST'])
+@login_required
+def add_food_from_image():
+    foods = request.json
+    for food in foods:
+        row = Foods.query.filter_by(name=food['name']).first()
+        if row:
+            # If exists, update
+            row.name = food['name']
+            row.quantity = food['quantity']
+            row.expiration_date = food['expiration_date']
+        else:
+            # if not exists, create
+            new_food = Foods(
+                name=food['name'], 
+                quantity=food['quantity'],
+                expiration_date=food['expiration_date'],
+                id_user=current_user.id
+            )
+            db.session.add(new_food)
+        
+        db.session.commit()
+    
+    return redirect(url_for('home_blueprint.route_template', template='tables'))
 
 # Errors
 
