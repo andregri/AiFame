@@ -3,6 +3,7 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+import collections
 import os
 from apps.config import AzureConfig
 from apps.home import blueprint
@@ -12,6 +13,7 @@ from jinja2 import TemplateNotFound
 from werkzeug.utils import secure_filename
 from aiohttp import ClientSession
 import asyncio
+import requests
 
 from azure.storage.blob import BlobClient, ContainerClient
 from apps.home import computervision
@@ -105,12 +107,21 @@ urls = ['https://www.grandecig.com/hs-fs/hubfs/images/blog_images/2020_Blog_Imag
 
 # Helper Functions
 
-async def fetch_url(session, url):
+async def fetch_url(session, img_data, object):
     """Fetch the specified URL using the aiohttp session specified."""
-    #response = await session.get(url)
-    #return {'url': response.url, 'status': response.status}
-    objets = await computervision.detect_objects(AzureConfig.computervision_client, url)
-    return {'object': objets[0].object_property, 'status': 200}
+    box = (
+        object.rectangle.x, # left
+        object.rectangle.y, # top
+        object.rectangle.x + object.rectangle.w, # right
+        object.rectangle.y + object.rectangle.h, # bottom
+    )
+    cropped_image = computervision.crop_image(img_data, box)
+    tmpfile = f'./{hash(cropped_image.getdata())}'
+    cropped_image.save(tmpfile, "JPEG")
+    cropped_image = open(tmpfile, "rb")
+    tag = await computervision.tag_object(AzureConfig.computervision_client, cropped_image)
+    os.remove(tmpfile)
+    return tag
 
 
 # Routes
@@ -118,16 +129,26 @@ async def fetch_url(session, url):
 @blueprint.route('/async_get_urls_v2')
 async def async_get_urls_v2():
     """Asynchronously retrieve the list of URLs."""
+    url = urls[0]
+
+    # 1. await Detect object from image url
+    objects = await computervision.detect_objects(AzureConfig.computervision_client, url)
+
+    # 2. crop objects
+    img_data = requests.get(url).content
     async with ClientSession() as session:
         tasks = []
-        for url in urls:
-            task = asyncio.create_task(fetch_url(session, url))
-            tasks.append(task)
-        sites = await asyncio.gather(*tasks)
+        for object in objects:
+            if object.rectangle.w > 50 and object.rectangle.h > 50:
+                task = asyncio.create_task(fetch_url(session, img_data, object))
+                tasks.append(task)
+        tags = await asyncio.gather(*tasks)
+
+    object_amount = collections.Counter(tags)
 
     # Generate the HTML response
-    response = '<h1>URLs:</h1>'
-    for site in sites:
-        response += f"<p>URL: {site['object']} --- Status Code: {site['status']}</p>"
+    response = '<h1>Food:</h1>'
+    for object, amount in object_amount.items():
+        response += f"<p>{object}: {amount}</p>"
 
     return response
