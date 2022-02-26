@@ -40,6 +40,7 @@ def food_post():
     # add the new user to the database
     db.session.add(new_food)
     db.session.commit()
+    db.session.close()
 
     return redirect(url_for('home_blueprint.route_template', template='tables'))
 
@@ -59,6 +60,7 @@ def food_update(id):
     food.quantity = form.quantity.data
 
     db.session.commit()
+    db.session.close()
 
     return redirect(url_for('home_blueprint.route_template', template='tables'))
 
@@ -68,6 +70,7 @@ def food_delete(id):
     my_data = Foods.query.get(id)
     db.session.delete(my_data)
     db.session.commit()
+    db.session.close()
     flash("Item deleted successfully.")
 
     return redirect(url_for('home_blueprint.route_template', template='tables'))
@@ -94,6 +97,7 @@ def add_food_from_image():
             db.session.add(new_food)
         
         db.session.commit()
+        db.session.close()
     
     return redirect(url_for('home_blueprint.route_template', template='tables'))
 
