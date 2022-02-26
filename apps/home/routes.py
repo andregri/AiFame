@@ -148,17 +148,14 @@ async def async_get_urls_v2():
         tags = await asyncio.gather(*tasks)
 
     detected_objects = collections.Counter(tags)
-    foods = []
-    for name, quantity in detected_objects.items():
+    foods = {}
+    for id, (name, quantity) in enumerate(detected_objects.items()):
         food = Foods(
             name=name, 
             quantity=quantity,
             expiration_date=date.today() + timedelta(days=1),
             id_user=current_user.id
         )
-        foods.append(food)
+        foods[id] = food
 
     return render_template('home/index.html', detected_foods=foods, form=form)
-
-# POST /add_food_from_image
-#  Body: [{'name':, quantity: , expiration_date: }, {}, {}]
