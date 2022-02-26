@@ -11,6 +11,7 @@ services:
       - --host=0.0.0.0
       - --extra-files=templates/:static/
     environment:
+      FLASK_ENV: development
       FLASK_DEBUG: "on"
       FLASK_APP: ./run.py
     ports: 
@@ -22,19 +23,6 @@ services:
       - web_network
     depends_on:
       - postgres
-
-  nginx:
-    container_name: nginx
-    restart: always
-    image: "nginx:latest"
-    ports:
-      - "85:85"
-    volumes:
-      - ./nginx:/etc/nginx/conf.d
-    networks:
-      - web_network
-    depends_on: 
-      - appseed-app
 
   postgres:
     image: postgres
