@@ -23,6 +23,11 @@ from apps.home import computervision
 from apps.food_inventory.models import Foods
 from apps.food_inventory.forms import FoodForm
 
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+# urls = ['',
+#         'https://www.collinsdictionary.com/images/full/fruit_163436567.jpg',
+#         'https://www.dole.com/-/media/project/dole/produce-images/headers/dole-produce-fruit-medley.png?rev=1416123f2d094cd1b7494365948214be&hash=F89C9786C9A5F599A784D7753F82236C']
+
 @blueprint.route('/index')
 @login_required
 def index():
@@ -63,10 +68,6 @@ def get_segment(request):
     except:
         return None
 
-
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -103,10 +104,6 @@ def upload_blob(container, filename, data):
     # Upload the created file
     blob_client.upload_blob(data)
 
-urls = ['https://www.grandecig.com/hs-fs/hubfs/images/blog_images/2020_Blog_Images/CompareTopDietTrends.jpg?width=730&name=CompareTopDietTrends.jpg',
-        'https://www.collinsdictionary.com/images/full/fruit_163436567.jpg',
-        'https://www.dole.com/-/media/project/dole/produce-images/headers/dole-produce-fruit-medley.png?rev=1416123f2d094cd1b7494365948214be&hash=F89C9786C9A5F599A784D7753F82236C']
-
 # Helper Functions
 
 async def fetch_url(session, img_data, object):
@@ -128,10 +125,10 @@ async def fetch_url(session, img_data, object):
 
 # Routes
 
-@blueprint.route('/async_get_urls_v2')
+@blueprint.route('/async_get_urls_v2_test', methods=['GET'])
 async def async_get_urls_v2():
     """Asynchronously retrieve the list of URLs."""
-    url = urls[0]
+    url = "https://www.grandecig.com/hs-fs/hubfs/images/blog_images/2020_Blog_Images/CompareTopDietTrends.jpg?width=730&name=CompareTopDietTrends.jpg"
     form = FoodForm(request.form)
 
     # 1. await Detect object from image url
@@ -158,4 +155,4 @@ async def async_get_urls_v2():
         )
         foods[id] = food
 
-    return render_template('home/index.html', detected_foods=foods, form=form)
+    return render_template('home/index.html', detected_foods=foods, drag_drop_disable=True, form=form)

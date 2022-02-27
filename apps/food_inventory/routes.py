@@ -95,7 +95,8 @@ def add_food_from_image():
         
         db.session.commit()
     
-    return redirect(url_for('home_blueprint.route_template', template='tables'))
+    print(url_for('home_blueprint.route_template', template='tables'))
+    return (url_for('home_blueprint.route_template', template='tables'))
 
 # Errors
 

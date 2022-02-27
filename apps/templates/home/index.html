@@ -21,286 +21,309 @@
 {% endif %}
 {% endwith %}
 
-<h3 style="margin-left:10px;">Upload your File</h3>
+{% if not drag_drop_disable %}
 <div class="drag-drop-container">
-  <div class="drag-area">
-    <div class="icon">
-      <i class="fas fa-images"></i>
+  <h3 style="margin-left:10px;">Upload your File</h3>
+  <div class="drag-drop-container">
+    <div class="drag-area">
+      <div class="icon">
+        <i class="fas fa-images"></i>
+      </div>
+      <span class="header">Drag & Drop</span>
+      <span class="header">or <span class="button">browse</span></span>
+      <input type="file" name="file" id="image" autocomplete="off" hidden />
+      <span class="support">Supports: JPEG, JPG, PNG</span>
     </div>
-    <span class="header">Drag & Drop</span>
-    <span class="header">or <span class="button">browse</span></span>
-    <input type="file" name="file" id="image" autocomplete="off" hidden />
-    <span class="support">Supports: JPEG, JPG, PNG</span>
   </div>
 </div>
 
-{% if detected_foods %}
-<div class="container-fluid py-4">
+<span class="header" style="display: table;margin: 0 auto;"> or </span>
+
+<div class="drag-drop-container">
+<form id="test-scan" action="/async_get_urls_v2_test" method="GET">
+  <input type="hidden" name="file" value="file" />
   <div class="row">
     <div class="col-12">
       <div class="card mb-4">
-        <div class="card-header pb-0">
-          <h6>Inventory</h6>
-        </div>
-        <div class="card-body px-0 pt-0 pb-2">
-          <div class="table-responsive p-0">
-            <table class="table align-items-center mb-0">
-              <thead>
-                <tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Food</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expiration
-                  </th>
-                  <th class="text-secondary opacity-7"></th>
-                </tr>
-              </thead>
-              <tbody id="detected_food_tables">
-                {% for id, food in detected_foods.items() %}
-                <tr id="{{ id }}">
-                  <td>
-                    <div class="d-flex px-2 py-1">
-                      <div>
-                        <img src="/static/assets/img/food.jpg" class="avatar avatar-sm me-3" alt="user1">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 id="name{{ id }}" class="mb-0 text-sm">{{ food['name'] }}</h6>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <p id="quantity{{ id }}" class="text-xs font-weight-bold mb-0">{{ food['quantity'] }}</p>
-                  </td>
-                  <td class="align-middle text-center">
-                    <span id="date{{ id }}" class="text-secondary text-xs font-weight-bold">{{ food['expiration_date'] }}</span>
-                  </td>
-                  <td class="align-middle text-center">
-                    <div class="ms-auto">
-                      <a class="btn btn-link text-warning px-3 mb-0" href="#modal-edit{{ id }}"><i
-                          class="fas fa-pencil-alt me-2" aria-hidden="true"></i>Edit</a>
-                      <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="#modal-delete{{ id }}"><i
-                          class="far fa-trash-alt me-2"></i>Delete</a>
-                    </div>
-                  </td>
-                </tr>
+        <a class="btn bg-gradient-dark mb-0" href="#" onclick="document.getElementById('test-scan').submit();">Test
+          Automatic Scan</a>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+{% endif %}
 
-                <div id="modal-edit{{ id }}" class="modal-window" role="dialog">
-                  <div>
-                    <a href="#" title="Close" class="modal-close">Close</a>
-                    <form id="edit-action-modal{{ id }}" method="" action="">
-                      <h1>Edit {{ food['name'] }}</h1>
-                      <div class="ms-md-auto pe-md-4 d-flex align-items-center">
-                        <h2> Name: </h2>
-                        <div class="input-group">
-                          <input id="edit-name{{ id }}" type="text" class="form-control" name="food_name" placeholder="food_name"
-                            value="{{ food['name'] }}">
+  {% if detected_foods %}
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h6>Inventory</h6>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Food</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Quantity</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                      Expiration
+                    </th>
+                    <th class="text-secondary opacity-7"></th>
+                  </tr>
+                </thead>
+                <tbody id="detected_food_tables">
+                  {% for id, food in detected_foods.items() %}
+                  <tr id="{{ id }}">
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div>
+                          <img src="/static/assets/img/food.jpg" class="avatar avatar-sm me-3" alt="user1">
+                        </div>
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 id="name{{ id }}" class="mb-0 text-sm">{{ food['name'] }}</h6>
                         </div>
                       </div>
-                      <div class="ms-md-auto pe-md-4 d-flex align-items-center">
-                        <h2> Quantity: </h2>
-                        <div class="input-group">
-                          <input id="edit-quantity{{ id }}"  type="number" class="form-control" name="quantity" placeholder="quantity"
-                            value="{{ food['quantity'] }}">
-                        </div>
+                    </td>
+                    <td>
+                      <p id="quantity{{ id }}" class="text-xs font-weight-bold mb-0">{{ food['quantity'] }}</p>
+                    </td>
+                    <td class="align-middle text-center">
+                      <span id="date{{ id }}" class="text-secondary text-xs font-weight-bold">{{ food['expiration_date']
+                        }}</span>
+                    </td>
+                    <td class="align-middle text-center">
+                      <div class="ms-auto">
+                        <a class="btn btn-link text-warning px-3 mb-0" href="#modal-edit{{ id }}"><i
+                            class="fas fa-pencil-alt me-2" aria-hidden="true"></i>Edit</a>
+                        <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="#modal-delete{{ id }}"><i
+                            class="far fa-trash-alt me-2"></i>Delete</a>
                       </div>
-                      <div class="ms-md-auto pe-md-4 d-flex align-items-center">
-                        <h2> Expiration: </h2>
-                        <div class="input-group">
-                          <input id="edit-date{{ id }}" type="date" class="form-control" name="expiration_date" placeholder="expiration"
-                            value="{{ food['expiration_date'] }}">
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-12">
-                          <div class="card mb-4">
-                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;"
-                              onclick="editRow('{{ id }}')">Confirm</a>
+                    </td>
+                  </tr>
+
+                  <div id="modal-edit{{ id }}" class="modal-window" role="dialog">
+                    <div>
+                      <a href="#" title="Close" class="modal-close">Close</a>
+                      <form id="edit-action-modal{{ id }}" method="" action="">
+                        <h1>Edit {{ food['name'] }}</h1>
+                        <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+                          <h2> Name: </h2>
+                          <div class="input-group">
+                            <input id="edit-name{{ id }}" type="text" class="form-control" name="food_name"
+                              placeholder="food_name" value="{{ food['name'] }}">
                           </div>
                         </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-
-                <div id="modal-delete{{ id }}" class="modal-window">
-                  <div>
-                    <a href="#" title="Close" class="modal-close">Close</a>
-                    <form id="delete-action-modal{{ id }}" method="" action="">
-                      <h1>Delete {{ food.name }}</h1>
-                      <div class="ms-md-auto pe-md-4 d-flex align-items-center">
-                        Are you sure you want to delete {{ food['name'] }}
-                      </div>
-                      <div class="row">
-                        <div class="col-12">
-                          <div class="card mb-4">
-                            <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;"
-                              onclick="deleteRow('{{ id }}');">Confirm</a>
+                        <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+                          <h2> Quantity: </h2>
+                          <div class="input-group">
+                            <input id="edit-quantity{{ id }}" type="number" class="form-control" name="quantity"
+                              placeholder="quantity" value="{{ food['quantity'] }}">
                           </div>
                         </div>
-                      </div>
-                    </form>
+                        <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+                          <h2> Expiration: </h2>
+                          <div class="input-group">
+                            <input id="edit-date{{ id }}" type="date" class="form-control" name="expiration_date"
+                              placeholder="expiration" value="{{ food['expiration_date'] }}">
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="card mb-4">
+                              <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;"
+                                onclick="editRow('{{ id }}')">Confirm</a>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </div>
-                </div>
-                {% endfor %}
-              </tbody>
-            </table>
+
+                  <div id="modal-delete{{ id }}" class="modal-window">
+                    <div>
+                      <a href="#" title="Close" class="modal-close">Close</a>
+                      <form id="delete-action-modal{{ id }}" method="" action="">
+                        <h1>Delete {{ food.name }}</h1>
+                        <div class="ms-md-auto pe-md-4 d-flex align-items-center">
+                          Are you sure you want to delete {{ food['name'] }}
+                        </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="card mb-4">
+                              <a class="btn modal-btn-confirm bg-gradient-success mb-0" href="javascript:;"
+                                onclick="deleteRow('{{ id }}');">Confirm</a>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-12">
-      <div class="card mb-4">
-        <a class="btn bg-gradient-success mb-0" onclick="submitDetectFoods();"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add to inventory</a>
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <a class="btn bg-gradient-success mb-0" onclick="submitDetectFoods();"><i
+              class="fas fa-plus"></i>&nbsp;&nbsp;Add to inventory</a>
+        </div>
       </div>
     </div>
+    {% endif %}
+
+    {% include "includes/footer.html" %}
+
   </div>
-  {% endif %}
 
-  {% include "includes/footer.html" %}
+  {% endblock content %}
 
-</div>
+  <!-- Specific JS goes HERE -->
+  {% block javascripts %}
 
-{% endblock content %}
+  <script>
+    function deleteRow(id) {
+      document.getElementById(id).remove()
+      document.getElementById("modal-delete" + id).remove()
+      document.getElementById("modal-edit" + id).remove()
+    }
 
-<!-- Specific JS goes HERE -->
-{% block javascripts %}
+    function editRow(id) {
+      document.getElementById("name" + id).innerHTML = document.getElementById("edit-name" + id).value
+      document.getElementById("quantity" + id).innerHTML = document.getElementById("edit-quantity" + id).value
+      document.getElementById("date" + id).innerHTML = document.getElementById("edit-date" + id).value
+      document.location.href = "#"
+    }
 
-<script>
-  function deleteRow(id) {
-    document.getElementById(id).remove()
-    document.getElementById("modal-delete" + id).remove()
-    document.getElementById("modal-edit" + id).remove()
-  }
+    function submitDetectFoods() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/add_foods_from_image", false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
 
-  function editRow(id) {
-    document.getElementById("name" + id).innerHTML = document.getElementById("edit-name" + id).value
-    document.getElementById("quantity" + id).innerHTML = document.getElementById("edit-quantity" + id).value
-    document.getElementById("date" + id).innerHTML = document.getElementById("edit-date" + id).value
-    document.location.href = "#"
-  }
+      let size = document.getElementById("detected_food_tables").childElementCount;
+      const array = [];
+      for (let id = 0; id < size; id++) {
+        array[id] = {
+          'name': document.getElementById("name" + id).innerHTML,
+          'quantity': document.getElementById("quantity" + id).innerHTML,
+          'expiration_date': document.getElementById("date" + id).innerHTML
+        }
+      }
+      console.log(array)
+      xhr.send(JSON.stringify(array));
+      document.location.href = xhr.responseText;
+    }
 
-  function submitDetectFoods() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/add_foods_from_image", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    const dropArea = document.querySelector('.drag-area');
+    const dragText = document.querySelector('.header');
+    const tag = document.getElementById('scan-button');
 
-    let size = document.getElementById("detected_food_tables").childElementCount;
-    const array = [];
-    for (let id = 0; id < size; id++) {
-      array[id] = {
-        'name': document.getElementById("name" + id).innerHTML,
-        'quantity': document.getElementById("quantity" + id).innerHTML,
-        'expiration_date': document.getElementById("date" + id).innerHTML
+    let button = dropArea.querySelector('.button');
+    let input = dropArea.querySelector('input');
+
+    var file;
+
+    button.onclick = () => {
+      input.click();
+    };
+
+    // when browse
+    input.addEventListener('change', function () {
+      file = this.files[0];
+      dropArea.classList.add('active');
+      console.log(file)
+      displayFile();
+      uploadFile(file)
+      removeFile()
+    });
+
+    // when file is inside drag area
+    dropArea.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      dropArea.classList.add('active');
+      dragText.textContent = 'Release to Upload';
+      // console.log('File is inside the drag area');
+    });
+
+    // when file leave the drag area
+    dropArea.addEventListener('dragleave', () => {
+      dropArea.classList.remove('active');
+      // console.log('File left the drag area');
+      dragText.textContent = 'Drag & Drop';
+    });
+
+    // when file is dropped
+    dropArea.addEventListener('drop', (event) => {
+      event.preventDefault();
+      // console.log('File is dropped in drag area');
+
+      file = event.dataTransfer.files[0]; // grab single file even of user selects multiple files
+      console.log(file);
+      displayFile();
+      uploadFile(file)
+      removeFile()
+    });
+
+    function displayFile() {
+      let fileType = file.type;
+      // console.log(fileType);
+
+      let validExtensions = ['image/jpeg', 'image/jpg', 'image/png'];
+
+      if (validExtensions.includes(fileType)) {
+        // console.log('This is an image file');
+        let fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+
+        fileReader.onloadend = function () {
+          let fileURL = fileReader.result;
+          // console.log(fileURL);
+          let imgTag = `<img src="${fileURL}" alt="">`;
+          dropArea.innerHTML = imgTag;
+        };
+      } else {
+        alert('This is not an Image File');
+        dropArea.classList.remove('active');
       }
     }
-    console.log(array)
-    xhr.send(JSON.stringify(array));
-    document.location.href = "/tables"
-  }
 
-  const dropArea = document.querySelector('.drag-area');
-  const dragText = document.querySelector('.header');
-  const tag = document.getElementById('scan-button');
-
-  let button = dropArea.querySelector('.button');
-  let input = dropArea.querySelector('input');
-
-  var file;
-
-  button.onclick = () => {
-    input.click();
-  };
-
-  // when browse
-  input.addEventListener('change', function () {
-    file = this.files[0];
-    dropArea.classList.add('active');
-    console.log(file)
-    displayFile();
-    uploadFile(file)
-    removeFile()
-  });
-
-  // when file is inside drag area
-  dropArea.addEventListener('dragover', (event) => {
-    event.preventDefault();
-    dropArea.classList.add('active');
-    dragText.textContent = 'Release to Upload';
-    // console.log('File is inside the drag area');
-  });
-
-  // when file leave the drag area
-  dropArea.addEventListener('dragleave', () => {
-    dropArea.classList.remove('active');
-    // console.log('File left the drag area');
-    dragText.textContent = 'Drag & Drop';
-  });
-
-  // when file is dropped
-  dropArea.addEventListener('drop', (event) => {
-    event.preventDefault();
-    // console.log('File is dropped in drag area');
-
-    file = event.dataTransfer.files[0]; // grab single file even of user selects multiple files
-    console.log(file);
-    displayFile();
-    uploadFile(file)
-    removeFile()
-  });
-
-  function displayFile() {
-    let fileType = file.type;
-    // console.log(fileType);
-
-    let validExtensions = ['image/jpeg', 'image/jpg', 'image/png'];
-
-    if (validExtensions.includes(fileType)) {
-      // console.log('This is an image file');
-      let fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onloadend = function () {
-        let fileURL = fileReader.result;
-        // console.log(fileURL);
-        let imgTag = `<img src="${fileURL}" alt="">`;
-        dropArea.innerHTML = imgTag;
-      };
-    } else {
-      alert('This is not an Image File');
-      dropArea.classList.remove('active');
-    }
-  }
-
-  function removeFile() {
-    setTimeout(function () {
-      let dragAreaTag =
+    function removeFile() {
+      setTimeout(function () {
+        let dragAreaTag =
         `<div class="drag-area">
-        <div class="icon">
-          <i class="fas fa-images"></i>
-        </div>
-        <span class="header">Drag & Drop</span>
-        <span class="header">or <span class="button">browse</span></span>
-        <input type="file" name="file" id="image" autocomplete="off" hidden />
-        <span class="support">Supports: JPEG, JPG, PNG</span>
-      </div>`
-      dropArea.innerHTML = dragAreaTag;
-      dropArea.classList.remove('active');
-      //alert('Chnaged back');
-    }, 1000)
+          <div class="icon">
+            <i class="fas fa-images"></i>
+          </div>
+          <span class="header">Drag & Drop</span>
+          <span class="header">or <span class="button">browse</span></span>
+          <input type="file" name="file" id="image" autocomplete="off" hidden />
+          <span class="support">Supports: JPEG, JPG, PNG</span>
+        </div>`
+        dropArea.innerHTML = dragAreaTag;
+        dropArea.classList.remove('active');
+        //alert('Chnaged back');
+      }, 1000)
 
-  }
+    }
 
-  async function uploadFile(file) {
-    let formData = new FormData();
-    formData.append("file", file);
-    await fetch('/upload-image', {
-      method: "POST",
-      body: formData
-    });
-    //alert('The file has been uploaded successfully.');
-  }
-</script>
+    async function uploadFile(file) {
+      let formData = new FormData();
+      formData.append("file", file);
+      await fetch('/upload-image', {
+        method: "POST",
+        body: formData
+      });
+      //alert('The file has been uploaded successfully.');
+    }
+  </script>
 
-{% endblock javascripts %}
+  {% endblock javascripts %}
