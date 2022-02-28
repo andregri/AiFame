@@ -4,8 +4,10 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 import collections
+from email import message
 from json import detect_encoding
 import os
+import base64
 from apps.config import AzureConfig
 from apps.home import blueprint
 from flask import render_template, request, flash, redirect, url_for, render_template
@@ -89,7 +91,11 @@ def upload_image():
         # file.save(os.path.join('./', filename))
         upload_blob('uploads', filename, file)
         flash('Image successfully uploaded and displayed below')
-        return redirect(url_for('.index'))
+        url_bytes = f"https://aifame.blob.core.windows.net/uploads/{filename}".encode('ascii')
+        base64_url = base64.b64encode(url_bytes)
+        url = base64_url.decode('ascii')
+        # return render_template('home/index.html', detected_foods=foods, drag_drop_disable=True)     
+        # return redirect(f'/async_get_urls_v2_test/{url}')
     else:
         print('Allowed image types are -> png, jpg, jpeg, gif')
         flash('Allowed image types are -> png, jpg, jpeg, gif')
@@ -125,10 +131,18 @@ async def fetch_url(session, img_data, object):
 
 # Routes
 
-@blueprint.route('/async_get_urls_v2_test', methods=['GET'])
-async def async_get_urls_v2():
+@blueprint.route('/async_get_urls_v2_test/<string:url>', methods=['GET'])
+async def async_get_urls_v2(url):
     """Asynchronously retrieve the list of URLs."""
-    url = "https://www.grandecig.com/hs-fs/hubfs/images/blog_images/2020_Blog_Images/CompareTopDietTrends.jpg?width=730&name=CompareTopDietTrends.jpg"
+    if url == 'test':
+        url = "https://www.grandecig.com/hs-fs/hubfs/images/blog_images/2020_Blog_Images/CompareTopDietTrends.jpg?width=730&name=CompareTopDietTrends.jpg"
+        # url = "https://aifame.blob.core.windows.net/uploads/test.jpg"
+
+    else:
+        base64_url = url.encode('ascii')
+        url_bytes = base64.b64decode(base64_url)
+        url = url_bytes.decode('ascii')
+
     form = FoodForm(request.form)
 
     # 1. await Detect object from image url

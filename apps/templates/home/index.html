@@ -35,12 +35,25 @@
       <span class="support">Supports: JPEG, JPG, PNG</span>
     </div>
   </div>
+  <form id="start-scan" action="/async_get_urls_v2_test/" method="GET">
+    <input type="hidden" name="file" value="file" />
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <a class="btn bg-gradient-dark mb-0" href="#" onclick="document.getElementById('start-scan').submit();">
+            Start Scan</a>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
+
+
 
 <span class="header" style="display: table;margin: 0 auto;"> or </span>
 
 <div class="drag-drop-container">
-<form id="test-scan" action="/async_get_urls_v2_test" method="GET">
+<form id="test-scan" action="/async_get_urls_v2_test/test" method="GET">
   <input type="hidden" name="file" value="file" />
   <div class="row">
     <div class="col-12">
@@ -243,7 +256,6 @@
       console.log(file)
       displayFile();
       uploadFile(file)
-      removeFile()
     });
 
     // when file is inside drag area
@@ -270,7 +282,6 @@
       console.log(file);
       displayFile();
       uploadFile(file)
-      removeFile()
     });
 
     function displayFile() {
