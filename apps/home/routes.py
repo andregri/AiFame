@@ -8,6 +8,10 @@ from email import message
 from json import detect_encoding
 import os
 import base64
+import hashlib
+import re
+import datetime 
+
 from apps.config import AzureConfig
 from apps.home import blueprint
 from flask import render_template, request, flash, redirect, url_for, render_template
@@ -88,10 +92,14 @@ def upload_image():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
+        ts = str(int(datetime.datetime.now().timestamp()))
+        file_extension = re.findall('.jpg|.jpeg|.png', filename)[-1]
+        basename = re.sub('.jpg|.jpeg|.png', '', filename) + ts
+        hash_filename = hashlib.md5(basename.encode()).hexdigest() + file_extension
         # file.save(os.path.join('./', filename))
-        upload_blob('uploads', filename, file)
+        upload_blob('uploads', hash_filename, file)
         flash('Image successfully uploaded and displayed below')
-        url_bytes = f"https://aifame.blob.core.windows.net/uploads/{filename}".encode('ascii')
+        url_bytes = f"https://aifame.blob.core.windows.net/uploads/{hash_filename}".encode('ascii')
         base64_url = base64.b64encode(url_bytes)
         url = base64_url.decode('ascii')
         # return render_template('home/index.html', detected_foods=foods, drag_drop_disable=True)     
