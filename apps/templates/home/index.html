@@ -35,8 +35,8 @@
       <span class="support">Supports: JPEG, JPG, PNG</span>
     </div>
   </div>
-  <form id="start-scan" action="/async_get_urls_v2_test/" method="GET">
-    <input type="hidden" name="file" value="file" />
+  <form id="start-scan" action="" method="GET">
+    <input type="hidden" name="url" />
     <div class="row">
       <div class="col-12">
         <div class="card mb-4">
@@ -332,8 +332,12 @@
       await fetch('/upload-image', {
         method: "POST",
         body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+        document.getElementById('start-scan').action = '/async_get_urls_v2_test/' + data;
       });
-      //alert('The file has been uploaded successfully.');
     }
   </script>
 

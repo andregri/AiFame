@@ -102,8 +102,7 @@ def upload_image():
         url_bytes = f"https://aifame.blob.core.windows.net/uploads/{hash_filename}".encode('ascii')
         base64_url = base64.b64encode(url_bytes)
         url = base64_url.decode('ascii')
-        # return render_template('home/index.html', detected_foods=foods, drag_drop_disable=True)     
-        # return redirect(f'/async_get_urls_v2_test/{url}')
+        return url
     else:
         print('Allowed image types are -> png, jpg, jpeg, gif')
         flash('Allowed image types are -> png, jpg, jpeg, gif')
