@@ -26,12 +26,12 @@ class Config(object):
 
     # PostgreSQL database
     SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
-        config('DB_ENGINE', default='postgresql'),
-        config('DB_USERNAME', default='appseed'),
-        config('DB_PASS', default='pass'),
-        config('DB_HOST', default='postgres'),
-        config('DB_PORT', default=5432),
-        config('DB_NAME', default='appseed-flask')
+        config('DB_ENGINE', default=os.getenv('DB_ENGINE')),
+        config('DB_USERNAME', default=os.getenv('DB_USERNAME')),
+        config('DB_PASS', default=os.getenv('DB_PASS')),
+        config('DB_HOST', default=os.getenv('DB_HOST')),
+        config('DB_PORT', default=os.getenv('DB_PORT')),
+        config('DB_NAME', default=os.getenv('DB_NAME'))
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
