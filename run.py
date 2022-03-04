@@ -7,11 +7,9 @@ from flask_migrate import Migrate
 from sys import exit
 from decouple import config
 
-from apps.config import config_dict
+from apps.config import config_dict, get_config_mode
 from apps import create_app, db
 
-# The configuration
-get_config_mode = 'Development'
 
 try:
     # Load the configuration using the default values

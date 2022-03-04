@@ -9,10 +9,11 @@ from dotenv import load_dotenv
 from azure.storage.blob import BlobServiceClient, BlobClient
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from msrest.authentication import CognitiveServicesCredentials
+import urllib
+
+load_dotenv()
 
 class Config(object):
-    load_dotenv()
-
     basedir = os.path.abspath(os.path.dirname(__file__))
 
     # Set up the App SECRET_KEY
@@ -35,6 +36,22 @@ class Config(object):
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+class ProductionConfig():
+    # Set up the App SECRET_KEY
+    SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_007')
+    DEBUG = False
+
+    # Security
+    SESSION_COOKIE_HTTPONLY = True
+    REMEMBER_COOKIE_HTTPONLY = True
+    REMEMBER_COOKIE_DURATION = 3600
+
+    params = urllib.parse.quote_plus("Driver={ODBC Driver 17 for SQL Server};Server=tcp:aifamesqlserver.database.windows.net,1433;Database=aifamedb;Uid=aifame_admin;Pwd=wucFR7U28HnQy9U;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+    conn_str = f"mssql+pyodbc:///?odbc_connect={params}"
+    SQLALCHEMY_DATABASE_URI = conn_str
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
 class AzureConfig():
     blob_storage_connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
 
@@ -51,5 +68,9 @@ class AzureConfig():
 
 # Load all possible configurations
 config_dict = {
-    'Development': Config
+    'Development': Config,
+    'Production': ProductionConfig
 }
+
+# The configuration
+get_config_mode = os.getenv('DEPLOY_ENVIRONMENT')

@@ -1,0 +1,49 @@
+FROM python:3.9-slim-buster AS base
+
+#RUN apt-get update && apt-get install gcc openssl unixodbc-dev
+
+RUN apt-get update && apt-get install gnupg build-essential -y
+
+ADD https://packages.microsoft.com/keys/microsoft.asc .
+RUN apt-key add microsoft.asc
+
+#Debian 11
+ADD https://packages.microsoft.com/config/debian/11/prod.list /etc/apt/sources.list.d/mssql-release.list
+
+RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql17
+# optional: for bcp and sqlcmd
+RUN ACCEPT_EULA=Y apt-get install -y mssql-tools
+#RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+#RUN source ~/.bashrc
+
+# optional: for unixODBC development headers
+RUN apt-get install -y unixodbc-dev
+# optional: kerberos library for debian-slim distributions
+RUN apt-get install -y libgssapi-krb5-2
+
+#Download the desired package(s)
+#ADD https://packages.microsoft.com/debian/10/prod/pool/main/m/msodbcsql17/msodbcsql17_17.9.1.1-1_amd64.deb .
+#RUN dp msodbcsql17_17.9.1.1-1_amd64.deb
+
+WORKDIR /usr/src/app
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install python dependencies
+RUN pip install --upgrade pip
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+FROM base AS prod
+
+COPY requirements.prod.txt ./
+RUN pip install --no-cache-dir -r requirements.prod.txt
+
+COPY . .
+
+RUN ldd /opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.9.so.1.1
+
+# gunicorn
+CMD ["gunicorn", "--config", "gunicorn-cfg.py", "run:app"]
