@@ -46,7 +46,7 @@ class ProductionConfig():
     REMEMBER_COOKIE_HTTPONLY = True
     REMEMBER_COOKIE_DURATION = 3600
 
-    params = urllib.parse.quote_plus("Driver={ODBC Driver 17 for SQL Server};Server=tcp:aifamesqlserver.database.windows.net,1433;Database=aifamedb;Uid=aifame_admin;Pwd=wucFR7U28HnQy9U;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+    params = urllib.parse.quote_plus(os.getenv('AZURE_DB_CONN_STRING'))
     conn_str = f"mssql+pyodbc:///?odbc_connect={params}"
     SQLALCHEMY_DATABASE_URI = conn_str
     SQLALCHEMY_TRACK_MODIFICATIONS = False

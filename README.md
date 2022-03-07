@@ -20,3 +20,11 @@ docker run -e DEPLOY_ENVIRONMENT="Development" -p 5005:5005 flaskapp
 docker build -t prodapp --file Dockerfile.prod .
 docker run -e DEPLOY_ENVIRONMENT="Production" -p 5005:5005 prodapp
 ```
+
+## Upload production image
+```
+docker build -t aifame --file Dockerfile.prod .
+docker login aifame.azurecr.io 
+docker tag aifame aifame.azurecr.io/aifame
+docker push aifame.azurecr.io/aifame
+```
