@@ -42,7 +42,7 @@ def index():
 @blueprint.route('/<template>')
 @login_required
 def route_template(template):
-    table = Foods.query.all()
+    table = Foods.query.filter_by(id_user=current_user.id)
     form = FoodForm(request.form)
 
     try:
