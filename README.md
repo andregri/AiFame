@@ -1,30 +1,28 @@
 # AiFame
 
-AiFame is Flask application made for the Microsoft Azure Trial Hackathon on DEV 2022.
+AiFame is web application made for the Microsoft Azure Trial Hackathon on DEV 2022. Don't waste your food again!
 
-## Run locally
-```
-docker run --name postgres --rm -p 5432:5432 -e POSTGRES_USER=appseed -e POSTGRES_PASSWORD=pass -e POSTGRES_DB=appseed-flask -d postgres
-gunicorn -w 1 run:app
-```
+AiFame allows you to:
+- Take a picture of your shopping and computer vision algorithms will analyze it for you to detect food automatically
+- Manage your food inventory like quantity and expiration date
 
-## Run with docker
-```
-docker run --name postgres --rm -p 5432:5432 -e POSTGRES_USER=appseed -e POSTGRES_PASSWORD=pass -e POSTGRES_DB=appseed-flask -d postgres
-docker build -t flaskapp --target dev .
-docker run -e DEPLOY_ENVIRONMENT="Development" -p 5005:5005 flaskapp
-```
+Try it live [here](http://aifame.azurewebsites.net)!
 
-## Build production Docker image
-```
-docker build -t prodapp --file Dockerfile.prod .
-docker run -e DEPLOY_ENVIRONMENT="Production" -p 5005:5005 prodapp
-```
+## Our tech stack
+<img src="https://cdn.worldvectorlogo.com/logos/python-4.svg" title="Python" alt="Python Logo" width="70"/>&emsp;
+<img src="https://cdn.worldvectorlogo.com/logos/docker.svg" title="Docker" alt="Docker Logo" width="80"/>&emsp;
+<img src="https://cdn.worldvectorlogo.com/logos/azure-2.svg" title="Docker" alt="Azure Logo" width="80"/>&emsp;
+<img src="https://cdn.worldvectorlogo.com/logos/gunicorn.svg" title="Docker" alt="Gunicorn Logo" width="100"/>&emsp;
+<img src="https://cdn.worldvectorlogo.com/logos/html-1.svg" title="Docker" alt="HTML Logo" width="70"/>&emsp;
+<img src="https://cdn.worldvectorlogo.com/logos/css-3.svg" title="Docker" alt="CSS Logo" width="70"/>&emsp;
+<img src="https://cdn.worldvectorlogo.com/logos/logo-javascript.svg" title="Docker" alt="JS Logo" width="70"/>&emsp;
 
-## Upload production image
-```
-docker build -t aifame --file Dockerfile.prod .
-docker login aifame.azurecr.io 
-docker tag aifame aifame.azurecr.io/aifame
-docker push aifame.azurecr.io/aifame
-```
+- The backend is built with Python Flask and containerized with Docker.
+- Docker images are pushed to Azure Container Registry and deployed with Azure App Service
+- User data are stored in Azure SQL Database 
+- Images are uploaded to Azure Storage Account and analyzed with Azure Computer Vision
+
+## Authors
+- [andregri](https://github.com/andregri)
+- [CaptainMich](https://github.com/CaptainMich)
+- [Dadigno](https://github.com/Dadigno)
