@@ -8,6 +8,8 @@ AiFame allows you to:
 
 Try it live [here](http://aifame.azurewebsites.net)!
 
+https://user-images.githubusercontent.com/22377285/157322611-a1f3dc31-4d5f-4365-9b60-d06622d6296e.mp4
+
 ## Our tech stack
 <img src="https://cdn.worldvectorlogo.com/logos/python-4.svg" title="Python" alt="Python Logo" width="70"/>&emsp;
 <img src="https://cdn.worldvectorlogo.com/logos/docker.svg" title="Docker" alt="Docker Logo" width="80"/>&emsp;
