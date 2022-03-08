@@ -52,7 +52,7 @@ def route_template(template):
         segment = get_segment(request)
 
         # Serve the file (if exists) from app/templates/home/FILE.html
-        return render_template("home/" + template, segment=segment, table=table, form=form)
+        return render_template("home/" + template, segment=segment, table=table, form=form, name=current_user.username)
 
     except TemplateNotFound:
         return render_template('home/page-404.html'), 404
